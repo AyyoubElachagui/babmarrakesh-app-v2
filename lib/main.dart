@@ -1,85 +1,59 @@
+import 'package:babmarrakesh/core/DI/on_boarding_di.dart';
+import 'package:babmarrakesh/core/routing/app_router.dart';
+import 'package:babmarrakesh/core/services/api_client/api_service.dart';
+import 'package:babmarrakesh/core/services/api_client/app_dio.dart';
+import 'package:babmarrakesh/core/services/api_client/impl/api_service_impl.dart';
+import 'package:babmarrakesh/env/env.dart';
+import 'package:babmarrakesh/features/on_boarding/presentation/bloc/on_boarding_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'env/env.dart';
+import 'core/common/locator.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  final apiService = ApiServiceImpl(
+    dio: AppDio.getInstance()
+      ..options.baseUrl =
+          Uri.decodeComponent('${Env.BASE_URL}/${Env.API_VERSION}'),
+  );
+
+  getIt.registerSingleton<ApiService>(apiService);
+
+  onBoardingDI(
+    prefs: prefs,
+    apiService: apiService,
+  );
+  // setup();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return BlocProvider(
+      create: (context) => OnBoardingBloc(
+        getCheckOnBoardingIsShowingUseCase: getIt(),
+        getVersionUseCase: getIt(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              Env.ACCESS_TOKEN_SHARED_PREFERENCES_KEY,
-            ),
-            Text(
-              Env.API_VERSION,
-            ),
-            Text(
-              Env.APP_VERSION,
-            ),
-            Text(
-              Env.BASE_URL,
-            ),
-            Text(
-              Env.ONBOARDING_SHARED_PREFERENCES_KEY,
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      // create: (BuildContext context) {  },
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
         ),
+        routerConfig: goRoute,
+        // routeInformationParser: goRoute.routeInformationParser,
+        // routerDelegate: goRoute.routerDelegate,
+        debugShowCheckedModeBanner: false,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
