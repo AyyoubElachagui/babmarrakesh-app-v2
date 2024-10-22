@@ -6,6 +6,7 @@ import 'package:babmarrakesh/core/services/api_client/impl/api_service_impl.dart
 import 'package:babmarrakesh/env/env.dart';
 import 'package:babmarrakesh/features/on_boarding/presentation/bloc/on_boarding_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,11 @@ import 'core/common/locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
+  );
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final apiService = ApiServiceImpl(
@@ -41,6 +47,7 @@ class MyApp extends StatelessWidget {
       create: (context) => OnBoardingBloc(
         getCheckOnBoardingIsShowingUseCase: getIt(),
         getVersionUseCase: getIt(),
+        setOnBoardingShowingUseCase: getIt(),
       ),
       // create: (BuildContext context) {  },
       child: MaterialApp.router(
@@ -51,7 +58,7 @@ class MyApp extends StatelessWidget {
         ),
         routerConfig: goRoute,
         // routeInformationParser: goRoute.routeInformationParser,
-        // routerDelegate: goRoute.routerDelegate,
+        //routerDelegate: goRoute.routerDelegate,
         debugShowCheckedModeBanner: false,
       ),
     );

@@ -4,7 +4,7 @@ import 'package:babmarrakesh/core/results/success/success_result.dart';
 import 'package:babmarrakesh/features/on_boarding/domain/repository/on_boarding_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class SetOnBoardingShowingUseCase extends UseCaseWithoutParams<void> {
+class SetOnBoardingShowingUseCase extends UseCaseWithoutParams<bool> {
   final OnBoardingRepository _onBoardingRepository;
 
   SetOnBoardingShowingUseCase(
@@ -12,8 +12,7 @@ class SetOnBoardingShowingUseCase extends UseCaseWithoutParams<void> {
       : _onBoardingRepository = onBoardingRepository;
 
   @override
-  Future<Either<FailureResult, SuccessResult<void>>> call() {
-    _onBoardingRepository.setCheckOnBoardingIsShowing();
-    throw UnimplementedError();
+  Future<Either<FailureResult, SuccessResult<bool>>> call() async {
+    return _onBoardingRepository.setCheckOnBoardingIsShowing();
   }
 }

@@ -39,12 +39,12 @@ class ImplOnBoardingRepository extends OnBoardingRepository {
   }
 
   @override
-  EitherResult<void> setCheckOnBoardingIsShowing() {
+  EitherResult<bool> setCheckOnBoardingIsShowing() {
     try {
       _localOnBoardingDataSource.setOnBoardingIsShowing();
       return right(
         const SuccessResult(
-          data: null,
+          data: true,
           statusCode: 200,
         ),
       );

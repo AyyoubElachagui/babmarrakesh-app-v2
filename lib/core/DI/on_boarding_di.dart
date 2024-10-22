@@ -8,6 +8,7 @@ import 'package:babmarrakesh/features/on_boarding/data/repository/on_boarding_re
 import 'package:babmarrakesh/features/on_boarding/domain/repository/on_boarding_repository.dart';
 import 'package:babmarrakesh/features/on_boarding/domain/usecases/get_check_on_boarding_is_showing_usecase.dart';
 import 'package:babmarrakesh/features/on_boarding/domain/usecases/get_version_usecase.dart';
+import 'package:babmarrakesh/features/on_boarding/domain/usecases/set_on_boarding_showing_usecase.dart';
 import 'package:babmarrakesh/features/on_boarding/presentation/bloc/on_boarding_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,9 +48,16 @@ void onBoardingDI({
   );
 
   getIt.registerFactory(
+    () => SetOnBoardingShowingUseCase(
+      onBoardingRepository: getIt(),
+    ),
+  );
+
+  getIt.registerFactory(
     () => OnBoardingBloc(
       getCheckOnBoardingIsShowingUseCase: getIt(),
       getVersionUseCase: getIt(),
+      setOnBoardingShowingUseCase: getIt(),
     ),
   );
 }
