@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'env/env.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -50,6 +52,21 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
+            ),
+            Text(
+              Env.ACCESS_TOKEN_SHARED_PREFERENCES_KEY,
+            ),
+            Text(
+              Env.API_VERSION,
+            ),
+            Text(
+              Env.APP_VERSION,
+            ),
+            Text(
+              Env.BASE_URL,
+            ),
+            Text(
+              Env.ONBOARDING_SHARED_PREFERENCES_KEY,
             ),
             Text(
               '$_counter',
