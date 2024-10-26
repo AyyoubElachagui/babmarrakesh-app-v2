@@ -1,6 +1,17 @@
+import 'dart:ui';
+
 import 'package:babmarrakesh/core/constants/app_palette.dart';
+import 'package:babmarrakesh/core/constants/image_assets.dart';
+import 'package:babmarrakesh/core/constants/onboarding_page_decoration.dart';
+import 'package:babmarrakesh/core/routing/routes.dart';
+import 'package:babmarrakesh/features/on_boarding/presentation/bloc/on_boarding_bloc.dart';
+import 'package:babmarrakesh/features/on_boarding/presentation/pages/widgets/onboarding_body.dart';
+import 'package:babmarrakesh/features/on_boarding/presentation/pages/widgets/onboarding_image.dart';
+import 'package:babmarrakesh/features/on_boarding/presentation/pages/widgets/onboarding_title.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -13,117 +24,158 @@ class OnBoardingPage extends StatefulWidget {
 class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<OnBoardingBloc>().add(
+            OnBoardingChecker(),
+          );
+    });
+  }
+
   void _onIntroEnd(context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => const Scaffold(
-          body: Center(
-            child: Text('Home Page'),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFullscreenImage() {
-    return Image.network(
-      'https://images.pexels.com/photos/20351329/pexels-photo-20351329/free-photo-of-fleurs-table-blanc-roses.jpeg',
-      fit: BoxFit.cover,
-      height: double.infinity,
-      width: double.infinity,
-      alignment: Alignment.center,
-    );
-  }
-
-  Widget _buildImage(String assetName, [double width = 350]) {
-    return Image.network(
-        'https://images.pexels.com/photos/20351329/pexels-photo-20351329/free-photo-of-fleurs-table-blanc-roses.jpeg',
-        width: width);
+    this.context.read<OnBoardingBloc>().add(OnBoardingShowingEvent());
   }
 
   @override
   Widget build(BuildContext context) {
-    const bodyStyle = TextStyle(fontSize: 19.0);
-
-    const pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
-      bodyTextStyle: bodyStyle,
-      bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.white,
-      imagePadding: EdgeInsets.zero,
-      imageFlex: 2,
-    );
-
     return SafeArea(
-      child: IntroductionScreen(
-        key: introKey,
-        globalBackgroundColor: Colors.white,
-        // allowImplicitScrolling: true,
-        autoScrollDuration: 3000,
-        infiniteAutoScroll: true,
-        pages: [
-          PageViewModel(
-            titleWidget: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Your Favorite ",
-                  ),
-                  TextSpan(
-                    text: "Grocery",
-                    style: TextStyle(
-                      color: AppPalette.greenColor,
-                    ),
-                  ),
-                ],
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+      child: BlocBuilder<OnBoardingBloc, OnBoardingState>(
+        buildWhen: (previous, current) =>
+            previous != current && current is OnBoardingLoading ||
+            current is OnBoardingSuccessFully ||
+            current is OnBoardingFailed,
+        builder: (_, state) {
+          if (state is OnBoardingFailed) {
+            return const Text("Error.........");
+          }
+
+          if (state is OnBoardingSuccessFully) {
+            if (state.isOnBoarding == true) {
+              WidgetsBinding.instance.addPostFrameCallback(
+                (e) => context.go(
+                  Routes.home.toPath,
+                ),
+              );
+              return const SizedBox();
+            }
+
+            return Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(ImageAssets.onBoardingBackground),
+                  fit: BoxFit.fill,
                 ),
               ),
-            ),
-            bodyWidget: Text(
-              "Instead of having to buy an entire share, invest any amount you want.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            image: _buildImage('img1.jpg'),
-            decoration: pageDecoration,
-          ),
-        ],
-        onDone: () => _onIntroEnd(context),
-        onSkip: () => _onIntroEnd(context), // You can override onSkip callback
-        showSkipButton: true,
-        skipOrBackFlex: 0,
-        nextFlex: 0,
-        showBackButton: false,
-        //rtl: true, // Display as right-to-left
-        back: const Icon(Icons.arrow_back),
-        skip: const Text('Skip', style: TextStyle(fontWeight: FontWeight.w600)),
-        next: const Icon(Icons.arrow_forward),
-        done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
-        curve: Curves.fastLinearToSlowEaseIn,
-        controlsMargin: const EdgeInsets.all(16),
-        controlsPadding: kIsWeb
-            ? const EdgeInsets.all(12.0)
-            : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-        dotsDecorator: const DotsDecorator(
-          size: Size(10.0, 10.0),
-          color: Color(0xFFBDBDBD),
-          activeSize: Size(22.0, 10.0),
-          activeShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
-          ),
-        ),
-        dotsContainerDecorator: const ShapeDecoration(
-          color: Colors.black87,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          ),
-        ),
+              child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2), // Blur effect
+                  child: IntroductionScreen(
+                    key: introKey,
+                    globalBackgroundColor: AppPalette.transparent,
+                    // allowImplicitScrolling: true,
+                    // autoScrollDuration: 3000,
+
+                    // infiniteAutoScroll: true,
+                    pages: [
+                      PageViewModel(
+                        titleWidget: OnBoardingTitle(
+                          color: AppPalette.primary,
+                          title: 'Your Favorite',
+                          markedTitle: 'Grocery',
+                        ),
+                        bodyWidget: OnBoardingBody(
+                          color: AppPalette.primary,
+                          content:
+                              "Instead of having to buy an entire share, invest any amount you want.",
+                        ),
+                        image: OnBoardingImage(
+                          startFromScratch: true,
+                        ),
+                        decoration: pageDecoration,
+                      ),
+                      PageViewModel(
+                        titleWidget: OnBoardingTitle(
+                          color: AppPalette.primary,
+                          title: 'Your Favorite',
+                          markedTitle: 'Grocery',
+                        ),
+                        bodyWidget: OnBoardingBody(
+                          color: AppPalette.primary,
+                          content:
+                              "Instead of having to buy an entire share, invest any amount you want.",
+                        ),
+                        image: OnBoardingImage(),
+                        decoration: pageDecoration,
+                      ),
+                      PageViewModel(
+                        titleWidget: OnBoardingTitle(
+                          color: AppPalette.primary,
+                          title: 'Your Favorite',
+                          markedTitle: 'Grocery',
+                        ),
+                        bodyWidget: OnBoardingBody(
+                          color: AppPalette.primary,
+                          content:
+                              "Instead of having to buy an entire share, invest any amount you want.",
+                        ),
+                        image: OnBoardingImage(),
+                        decoration: pageDecoration,
+                      ),
+                    ],
+                    onDone: () => _onIntroEnd(context),
+                    onSkip: () => _onIntroEnd(context),
+                    // You can override onSkip callback
+                    showSkipButton: true,
+                    skipOrBackFlex: 0,
+                    nextFlex: 0,
+                    showBackButton: false,
+                    //rtl: true, // Display as right-to-left
+                    // back: const Icon(Icons.arrow_back),
+                    skip: Text(
+                      'Skip',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppPalette.eggShell,
+                      ),
+                    ),
+                    next: Icon(
+                      Icons.arrow_forward,
+                      color: AppPalette.eggShell,
+                    ),
+                    done: Text(
+                      'Done',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppPalette.eggShell,
+                      ),
+                    ),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    controlsMargin: const EdgeInsets.all(16),
+                    controlsPadding: kIsWeb
+                        ? const EdgeInsets.all(12.0)
+                        : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+                    dotsDecorator: DotsDecorator(
+                      size: const Size(10.0, 10.0),
+                      color: AppPalette.lightGrayColor,
+                      activeColor: AppPalette.primary,
+                      activeSize: const Size(22.0, 10.0),
+                      activeShape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                      ),
+                    ),
+                    dotsContainerDecorator: ShapeDecoration(
+                      color: AppPalette.transparent,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      ),
+                    ),
+                  )),
+            );
+          }
+
+          return const CircularProgressIndicator();
+        },
       ),
     );
   }

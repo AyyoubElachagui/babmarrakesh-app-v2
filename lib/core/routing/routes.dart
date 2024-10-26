@@ -6,6 +6,7 @@ enum Routes {
   details,
   search,
   settings,
+  splash,
 }
 
 extension RoutesExtension on Routes {
@@ -19,6 +20,8 @@ extension RoutesExtension on Routes {
         return '/search';
       case Routes.settings:
         return '/settings';
+      case Routes.splash:
+        return '/splash';
       default:
         return '/introduction';
     }
@@ -34,6 +37,8 @@ extension RoutesExtension on Routes {
         return 'SEARCH';
       case Routes.settings:
         return 'SETTINGS';
+      case Routes.splash:
+        return 'SPLASH';
       default:
         return 'INTRODUCTION';
     }

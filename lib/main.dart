@@ -1,4 +1,5 @@
 import 'package:babmarrakesh/core/DI/on_boarding_di.dart';
+import 'package:babmarrakesh/core/DI/splash_di.dart';
 import 'package:babmarrakesh/core/routing/app_router.dart';
 import 'package:babmarrakesh/core/services/api_client/api_service.dart';
 import 'package:babmarrakesh/core/services/api_client/app_dio.dart';
@@ -33,6 +34,11 @@ Future<void> main() async {
     prefs: prefs,
     apiService: apiService,
   );
+
+  splashDI(
+    prefs: prefs,
+    apiService: apiService,
+  );
   // setup();
   runApp(const MyApp());
 }
@@ -43,13 +49,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => OnBoardingBloc(
-        getCheckOnBoardingIsShowingUseCase: getIt(),
-        getVersionUseCase: getIt(),
-        setOnBoardingShowingUseCase: getIt(),
-      ),
-      // create: (BuildContext context) {  },
+    return MultiBlocProvider(
+      providers: [
+        /*BlocProvider<SplashBloc>(
+          create: (context) => SplashBloc(getVersionUseCase: getIt()),
+        ),*/
+        BlocProvider<OnBoardingBloc>(
+          create: (context) => OnBoardingBloc(
+            getCheckOnBoardingIsShowingUseCase: getIt(),
+            getVersionUseCase: getIt(),
+            setOnBoardingShowingUseCase: getIt(),
+          ),
+        ),
+      ],
       child: MaterialApp.router(
         title: 'Flutter Demo',
         theme: ThemeData(

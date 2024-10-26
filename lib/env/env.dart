@@ -20,4 +20,7 @@ abstract class Env {
   @EnviedField(varName: 'ACCESS_TOKEN_SHARED_PREFERENCES_KEY', obfuscate: true)
   static String ACCESS_TOKEN_SHARED_PREFERENCES_KEY =
       _Env.ACCESS_TOKEN_SHARED_PREFERENCES_KEY;
+
+  @EnviedField(varName: 'APP_VERSION_KEY', obfuscate: true)
+  static String APP_VERSION_KEY = _Env.APP_VERSION_KEY;
 }
