@@ -1,7 +1,7 @@
 import 'package:babmarrakesh/core/constants/app_palette.dart';
 import 'package:babmarrakesh/core/routing/routes.dart';
 import 'package:babmarrakesh/env/env.dart';
-import 'package:babmarrakesh/features/home/home_page.dart';
+import 'package:babmarrakesh/features/home/presentation/page/home_page.dart';
 import 'package:babmarrakesh/features/on_boarding/presentation/pages/onboarding_page.dart';
 import 'package:babmarrakesh/features/splash/presentation/page/splash_page.dart';
 import 'package:flutter/material.dart';
