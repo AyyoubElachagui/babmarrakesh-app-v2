@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
                   cur is SplashGetVersionSuccessfully,
               builder: (context, SplashState state) {
                 if (state is SplashGetVersionLoading) {
-                  return Container(
+                  return SizedBox(
                     width: context.width,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -55,16 +55,9 @@ class _SplashPageState extends State<SplashPage> {
                 }
 
                 if (state is SplashGetVersionFailed) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Errorrrrrrrrrrrrrrrr!!!!!!! $state",
-                        style: TextStyle(color: AppPalette.redColor),
-                      ),
-                    ],
-                  );
+                  WidgetsBinding.instance.addPostFrameCallback(
+                      (c) => context.go(Routes.introduction.toPath));
+                  return const SizedBox();
                 }
 
                 if (state is SplashGetVersionSuccessfully) {

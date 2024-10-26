@@ -41,34 +41,3 @@ final class OnBoardingFailed extends OnBoardingState {
         failureResult,
       ];
 }
-
-final class GetVersionLoading extends OnBoardingState {
-  @override
-  List<Object?> get props => [];
-}
-
-final class GetVersionSuccessFully extends OnBoardingState {
-  final String response;
-
-  GetVersionSuccessFully({
-    required this.response,
-  });
-
-  @override
-  List<Object?> get props => [
-        response,
-      ];
-}
-
-final class GetVersionFailed extends OnBoardingState {
-  final FailureResult failureResult;
-
-  GetVersionFailed({
-    required this.failureResult,
-  });
-
-  @override
-  List<Object?> get props => [
-        failureResult,
-      ];
-}

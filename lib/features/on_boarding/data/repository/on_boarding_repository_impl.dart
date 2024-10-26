@@ -3,19 +3,15 @@ import 'package:babmarrakesh/core/extensions/string_extension.dart';
 import 'package:babmarrakesh/core/results/failure/failure_result.dart';
 import 'package:babmarrakesh/core/results/success/success_result.dart';
 import 'package:babmarrakesh/features/on_boarding/data/datasource/local_on_boarding_datasource.dart';
-import 'package:babmarrakesh/features/on_boarding/data/datasource/remote_on_boarding_datasource.dart';
 import 'package:babmarrakesh/features/on_boarding/domain/repository/on_boarding_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class ImplOnBoardingRepository extends OnBoardingRepository {
   final LocalOnBoardingDataSource _localOnBoardingDataSource;
-  final RemoteOnBoardingDataSource _remoteOnBoardingDataSource;
 
   ImplOnBoardingRepository({
     required LocalOnBoardingDataSource localOnBoardingDataSource,
-    required RemoteOnBoardingDataSource remoteOnBoardingDataSource,
-  })  : _localOnBoardingDataSource = localOnBoardingDataSource,
-        _remoteOnBoardingDataSource = remoteOnBoardingDataSource;
+  }) : _localOnBoardingDataSource = localOnBoardingDataSource;
 
   @override
   EitherResult<bool> getCheckOnBoardingIsShowing() {
@@ -54,28 +50,6 @@ class ImplOnBoardingRepository extends OnBoardingRepository {
           ex: e.toString().toException,
           statusCode: 404,
           type: ErrorType.local,
-        ),
-      );
-    }
-  }
-
-  @override
-  Future<EitherResult<String>> getVersion() async {
-    try {
-      final result = await _remoteOnBoardingDataSource.getVersion();
-
-      return right(
-        SuccessResult(
-          data: result,
-          statusCode: 200,
-        ),
-      );
-    } catch (e) {
-      return left(
-        FailureResult(
-          ex: e.toString().toException,
-          statusCode: 404,
-          type: ErrorType.remote,
         ),
       );
     }

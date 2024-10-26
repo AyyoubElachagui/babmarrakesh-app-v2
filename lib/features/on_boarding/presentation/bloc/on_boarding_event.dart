@@ -11,8 +11,3 @@ final class OnBoardingShowingEvent extends OnBoardingEvent {
   @override
   List<Object?> get props => [];
 }
-
-final class GetVersionEvent extends OnBoardingEvent {
-  @override
-  List<Object?> get props => [];
-}

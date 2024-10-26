@@ -57,7 +57,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<OnBoardingBloc>(
           create: (context) => OnBoardingBloc(
             getCheckOnBoardingIsShowingUseCase: getIt(),
-            getVersionUseCase: getIt(),
             setOnBoardingShowingUseCase: getIt(),
           ),
         ),
