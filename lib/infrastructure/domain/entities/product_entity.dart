@@ -5,7 +5,11 @@ import 'package:babmarrakesh/infrastructure/domain/entities/product_collections_
 import 'package:babmarrakesh/infrastructure/domain/entities/product_labels_entity.dart';
 import 'package:babmarrakesh/infrastructure/domain/entities/status_entity.dart';
 import 'package:babmarrakesh/infrastructure/domain/entities/store_entity.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'product_entity.g.dart';
+
+@JsonSerializable()
 class ProductEntity {
   final int? _id;
   final String? _name;
@@ -67,7 +71,7 @@ class ProductEntity {
     required int? order,
     required int? quantity,
     required int? allowCheckoutWhenOutOfStock,
-    required int? withStorehouseManagement,
+    int? withStorehouseManagement,
     required int? isFeatured,
     required int? brandId,
     required String? brandName,
@@ -153,4 +157,58 @@ class ProductEntity {
         _productLabels = productLabels,
         _store = store,
         _categories = categories;
+
+  // Public getters
+  int? get id => _id;
+  String? get name => _name;
+  String? get description => _description;
+  String? get content => _content;
+  StatusEntity? get status => _status;
+  List<String>? get images => _images;
+  String? get sku => _sku;
+  int? get order => _order;
+  int? get quantity => _quantity;
+  int? get allowCheckoutWhenOutOfStock => _allowCheckoutWhenOutOfStock;
+  int? get withStoreHouseManagement => _withStoreHouseManagement;
+  int? get isFeatured => _isFeatured;
+  int? get brandId => _brandId;
+  String? get brandName => _brandName;
+  int? get isVariation => _isVariation;
+  int? get saleType => _saleType;
+  double? get price => _price;
+  double? get salePrice => _salePrice;
+  String? get startDate => _startDate;
+  String? get endDate => _endDate;
+  double? get length => _length;
+  double? get wide => _wide;
+  double? get height => _height;
+  double? get weight => _weight;
+  int? get taxId => _taxId;
+  int? get views => _views;
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
+  StatusEntity? get stockStatus => _stockStatus;
+  int? get createdById => _createdById;
+  String? get image => _image;
+  StatusEntity? get productType => _productType;
+  String? get barcode => _barcode;
+  double? get costPerItem => _costPerItem;
+  int? get generateLicenseCode => _generateLicenseCode;
+  int? get storeId => _storeId;
+  int? get approvedBy => _approvedBy;
+  double? get finalPrice => _finalPrice;
+  int? get reviewsCount => _reviewsCount;
+  double? get reviewsAvg => _reviewsAvg;
+  double? get originalPrice => _originalPrice;
+  double? get frontSalePrice => _frontSalePrice;
+  PivotEntity? get pivot => _pivot;
+  DefaultVariationEntity get defaultVariation => _defaultVariation;
+  List<ProductCollectionsEntity>? get productCollections => _productCollections;
+  List<ProductLabelsEntity>? get productLabels => _productLabels;
+  List<StoreEntity>? get store => _store;
+  List<CategoryEntity>? get categories => _categories;
+
+  factory ProductEntity.fromJson(Map<String, dynamic> json) =>
+      _$ProductEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$ProductEntityToJson(this);
 }

@@ -1,6 +1,10 @@
 import 'package:babmarrakesh/infrastructure/domain/entities/product_pivot_entity.dart';
 import 'package:babmarrakesh/infrastructure/domain/entities/status_entity.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'product_collections_entity.g.dart';
+
+@JsonSerializable()
 class ProductCollectionsEntity {
   final int? _id;
   final String? _name;
@@ -34,4 +38,20 @@ class ProductCollectionsEntity {
         _updatedAt = updatedAt,
         _isFeatured = isFeatured,
         _pivot = pivot;
+
+  // Public getters
+  int? get id => _id;
+  String? get name => _name;
+  String? get slug => _slug;
+  String? get description => _description;
+  String? get image => _image;
+  StatusEntity? get status => _status;
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
+  int? get isFeatured => _isFeatured;
+  ProductPivotEntity? get pivot => _pivot;
+
+  factory ProductCollectionsEntity.fromJson(Map<String, dynamic> json) =>
+      _$ProductCollectionsEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$ProductCollectionsEntityToJson(this);
 }

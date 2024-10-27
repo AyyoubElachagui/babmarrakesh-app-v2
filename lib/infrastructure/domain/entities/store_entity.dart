@@ -1,5 +1,9 @@
 import 'package:babmarrakesh/infrastructure/domain/entities/status_entity.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'store_entity.g.dart';
+
+@JsonSerializable()
 class StoreEntity {
   final int? _id;
   final String? _name;
@@ -33,7 +37,7 @@ class StoreEntity {
     required String? logo,
     required String? description,
     required String? content,
-    required StatusEntity status,
+    required StatusEntity? status,
     required String? vendorVerifiedAt,
     required String? createdAt,
     required String? updatedAt,
@@ -57,4 +61,28 @@ class StoreEntity {
         _updatedAt = updatedAt,
         _zipCode = zipCode,
         _company = company;
+
+  // Public getters
+  int? get id => _id;
+  String? get name => _name;
+  String? get email => _email;
+  String? get phone => _phone;
+  String? get address => _address;
+  String? get country => _country;
+  String? get state => _state;
+  String? get city => _city;
+  int? get customerId => _customerId;
+  String? get logo => _logo;
+  String? get description => _description;
+  String? get content => _content;
+  StatusEntity? get status => _status;
+  String? get vendorVerifiedAt => _vendorVerifiedAt;
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
+  String? get zipCode => _zipCode;
+  String? get company => _company;
+
+  factory StoreEntity.fromJson(Map<String, dynamic> json) =>
+      _$StoreEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$StoreEntityToJson(this);
 }

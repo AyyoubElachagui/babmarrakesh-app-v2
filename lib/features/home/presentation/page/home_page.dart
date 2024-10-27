@@ -1,11 +1,13 @@
 import 'package:babmarrakesh/core/constants/app_palette.dart';
+import 'package:babmarrakesh/core/constants/decorations.dart';
 import 'package:babmarrakesh/core/constants/image_assets.dart';
+import 'package:babmarrakesh/core/constants/text_styles.dart';
 import 'package:babmarrakesh/core/widgets/rounded_icon.dart';
 import 'package:babmarrakesh/core/widgets/spacers/horizontal_spacer.dart';
-import 'package:babmarrakesh/core/widgets/spacers/vertical_spacer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:searchfield/searchfield.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -63,94 +65,104 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RoundedIcon(
+                      icon: Icons.menu,
+                      bgColor: AppPalette.primary,
+                      onTap: () {},
+                    ),
+                    Image.asset(
+                      ImageAssets.babMarrakeshLogoHeaderEn,
+                      height: 50,
+                    ),
+                    Row(
+                      children: [
+                        RoundedIcon(
+                          icon: CupertinoIcons.cart_fill,
+                          bgColor: AppPalette.primary,
+                          hasCounter: true,
+                          onTap: () =>
+                              debugPrint("^^^^^^^^^^^^^ clicked ^^^^^^^^^^^^^"),
+                        ),
+                        const HorizontalSpacer(6),
+                        RoundedIcon(
+                          icon: CupertinoIcons.heart_fill,
+                          bgColor: AppPalette.primary,
+                          hasCounter: true,
+                          onTap: () =>
+                              debugPrint("^^^^^^^^^^^^^ clicked ^^^^^^^^^^^^^"),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  RoundedIcon(
-                    icon: Icons.menu,
-                    bgColor: AppPalette.primary,
-                    onTap: () {},
-                  ),
-                  Image.asset(
-                    ImageAssets.babMarrakeshLogoHeaderEn,
-                    height: 50,
-                  ),
-                  Row(
-                    children: [
-                      RoundedIcon(
-                        icon: CupertinoIcons.cart_fill,
-                        bgColor: AppPalette.primary,
-                        hasCounter: true,
-                        onTap: () =>
-                            debugPrint("^^^^^^^^^^^^^ clicked ^^^^^^^^^^^^^"),
-                      ),
-                      const HorizontalSpacer(6),
-                      RoundedIcon(
-                        icon: CupertinoIcons.heart_fill,
-                        bgColor: AppPalette.primary,
-                        hasCounter: true,
-                        onTap: () =>
-                            debugPrint("^^^^^^^^^^^^^ clicked ^^^^^^^^^^^^^"),
-                      ),
-                    ],
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: SearchField<int>(
+                    searchInputDecoration: SearchInputDecoration(
+                      hintText: 'search you product prefer!',
+                      hintStyle: TextStyles.hintTextStyle,
+                      border: Decorations.border,
+                      focusedBorder: Decorations.focusedBorder,
+                      enabledBorder: Decorations.enabledBorder,
+                      errorBorder: Decorations.errorBorder,
+                      focusedErrorBorder: Decorations.focusedErrorBorder,
+                      disabledBorder: Decorations.disabledBorder,
+                    ),
+                    suggestions: List.generate(10, (index) {
+                      return SearchFieldListItem<int>(
+                        index.toString(),
+                        item: index,
+                        // Use child to show Custom Widgets in the suggestions
+                        // defaults to Text widget
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(index.toString()),
+                            ],
+                          ),
+                        ),
+                      );
+                    })),
               ),
-            ),
-            // SearchField<Country>(
-            //   suggestions: countries
-            //       .map(
-            //         (e) => SearchFieldListItem<Country>(
-            //       e.name,
-            //       item: e,
-            //       // Use child to show Custom Widgets in the suggestions
-            //       // defaults to Text widget
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(8.0),
-            //         child: Row(
-            //           children: [
-            //             CircleAvatar(
-            //               backgroundImage: NetworkImage(e.flag),
-            //             ),
-            //             SizedBox(
-            //               width: 10,
-            //             ),
-            //             Text(e.name),
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //   ).toList(),
-            // ),
-            const VerticalSpacer(20),
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 180,
-                aspectRatio: 16 / 9,
-                viewportFraction: 0.9,
-                initialPage: 0,
-                enableInfiniteScroll: true,
-                reverse: false,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 1),
-                autoPlayAnimationDuration: const Duration(milliseconds: 1000),
-                autoPlayCurve: Curves.easeIn,
-                enlargeCenterPage: true,
-                enlargeFactor: 0.5,
-                scrollDirection: Axis.horizontal,
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: 180,
+                  aspectRatio: 16 / 9,
+                  viewportFraction: 0.9,
+                  initialPage: 0,
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 4),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 1000),
+                  autoPlayCurve: Curves.easeIn,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0.5,
+                  scrollDirection: Axis.horizontal,
+                ),
+                items: imageSliders(),
               ),
-              items: imageSliders(),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

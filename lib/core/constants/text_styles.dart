@@ -4,6 +4,8 @@ import 'package:flutter/material.dart' show TextStyle;
 class TextStyles {
   const TextStyles._();
 
+  static final hintTextStyle = const TextStyle().primary.w300.size(14);
+
   static final white14w500Montserrat =
       const TextStyle().white.w500.montserrat.size(14);
 

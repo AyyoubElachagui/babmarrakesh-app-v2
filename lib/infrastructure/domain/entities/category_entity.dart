@@ -1,5 +1,9 @@
 import 'package:babmarrakesh/infrastructure/domain/entities/status_entity.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'category_entity.g.dart';
+
+@JsonSerializable()
 class CategoryEntity {
   final int? _id;
   final String? _name;
@@ -39,4 +43,22 @@ class CategoryEntity {
         _updatedAt = updatedAt,
         _icon = icon,
         _iconImage = iconImage;
+
+  // Public getters
+  int? get id => _id;
+  String? get name => _name;
+  int? get parentId => _parentId;
+  String? get description => _description;
+  StatusEntity? get status => _status;
+  int? get order => _order;
+  String? get image => _image;
+  int? get isFeatured => _isFeatured;
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
+  String? get icon => _icon;
+  String? get iconImage => _iconImage;
+
+  factory CategoryEntity.fromJson(Map<String, dynamic> json) =>
+      _$CategoryEntityFromJson(json);
+  Map<String, dynamic> toJson() => _$CategoryEntityToJson(this);
 }
