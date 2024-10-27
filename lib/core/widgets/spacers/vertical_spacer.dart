@@ -8,7 +8,7 @@ class VerticalSpacer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _height.h,
+      height: _height,
     );
   }
 }

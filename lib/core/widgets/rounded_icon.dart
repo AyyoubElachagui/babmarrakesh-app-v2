@@ -5,14 +5,17 @@ class RoundedIcon extends StatelessWidget {
   final Color _bgColor;
   final IconData _icon;
   final Function _onTap;
-  const RoundedIcon({
+  bool _hasCounter = false;
+  RoundedIcon({
     super.key,
     required Color bgColor,
     required IconData icon,
     required Function onTap,
+    bool hasCounter = false,
   })  : _bgColor = bgColor,
         _icon = icon,
-        _onTap = onTap;
+        _onTap = onTap,
+        _hasCounter = hasCounter;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,10 @@ class RoundedIcon extends StatelessWidget {
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-          color: _bgColor,
+          // color: _bgColor,
+          border: Border.all(
+            color: _bgColor,
+          ),
           borderRadius: BorderRadius.circular(
             10,
           ),
@@ -32,28 +38,31 @@ class RoundedIcon extends StatelessWidget {
             children: [
               Icon(
                 _icon,
-                color: AppPalette.whiteColor,
+                color: AppPalette.primary,
+                size: 28,
               ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color: AppPalette.eggShell,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Text(
-                    '1',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: AppPalette.primary,
+              if (_hasCounter)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    width: 15,
+                    height: 15,
+                    decoration: BoxDecoration(
+                      color: AppPalette.second,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '10',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: AppPalette.whiteColor,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

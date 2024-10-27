@@ -9,6 +9,7 @@ class AppPalette {
   static Color second = fromHex('#ccae7a');
   static Color eggShell = fromHex('#d2e6ca');
   static Color lightYellow = fromHex('#f1e9d6');
+  static Color blue = fromHex('#0a4eff');
 
   static Color success = fromHex('#22bb33');
   static Color warning = fromHex('#f0ad4e');
