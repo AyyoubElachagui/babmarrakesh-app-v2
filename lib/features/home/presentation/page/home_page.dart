@@ -106,6 +106,31 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            // SearchField<Country>(
+            //   suggestions: countries
+            //       .map(
+            //         (e) => SearchFieldListItem<Country>(
+            //       e.name,
+            //       item: e,
+            //       // Use child to show Custom Widgets in the suggestions
+            //       // defaults to Text widget
+            //       child: Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: Row(
+            //           children: [
+            //             CircleAvatar(
+            //               backgroundImage: NetworkImage(e.flag),
+            //             ),
+            //             SizedBox(
+            //               width: 10,
+            //             ),
+            //             Text(e.name),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ).toList(),
+            // ),
             const VerticalSpacer(20),
             CarouselSlider(
               options: CarouselOptions(
@@ -116,39 +141,15 @@ class _HomePageState extends State<HomePage> {
                 enableInfiniteScroll: true,
                 reverse: false,
                 autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayInterval: const Duration(seconds: 1),
+                autoPlayAnimationDuration: const Duration(milliseconds: 1000),
                 autoPlayCurve: Curves.easeIn,
                 enlargeCenterPage: true,
-                enlargeFactor: 0.7,
+                enlargeFactor: 0.5,
                 scrollDirection: Axis.horizontal,
               ),
               items: imageSliders(),
             ),
-            // CarouselSlider.builder(
-            //   itemCount: 15,
-            //   itemBuilder:
-            //       (BuildContext context, int itemIndex, int pageViewIndex) =>
-            //           Container(
-            //     child: Text(itemIndex.toString()),
-            //   ),
-            //   options: CarouselOptions(
-            //     height: 400,
-            //     aspectRatio: 16 / 9,
-            //     viewportFraction: 0.8,
-            //     initialPage: 0,
-            //     enableInfiniteScroll: true,
-            //     reverse: false,
-            //     autoPlay: true,
-            //     autoPlayInterval: Duration(seconds: 3),
-            //     autoPlayAnimationDuration: Duration(milliseconds: 800),
-            //     autoPlayCurve: Curves.fastOutSlowIn,
-            //     enlargeCenterPage: true,
-            //     enlargeFactor: 0.3,
-            //     onPageChanged: callbackFunction,
-            //     scrollDirection: Axis.horizontal,
-            //   ),
-            // )
           ],
         ),
       ),
